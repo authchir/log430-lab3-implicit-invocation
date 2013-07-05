@@ -1,0 +1,15 @@
+*.class
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+dataout*.txt
+
+# NetBeans specific #
+build.xml
+nbproject/
+build/
+manifest.mf
+/bin
