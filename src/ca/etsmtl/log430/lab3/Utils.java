@@ -10,4 +10,13 @@ public class Utils {
 		
 		return null;
 	}
+	
+	public static<T> boolean contains(Iterable<T> iterable, final T value) {
+		return null != find(iterable, new Predicate<T>() {
+			@Override
+			public boolean run(T t) {
+				return t == value;
+			}
+		});
+	}
 }

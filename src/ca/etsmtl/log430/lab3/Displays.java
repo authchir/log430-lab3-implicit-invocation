@@ -122,6 +122,20 @@ public class Displays {
 			lineCheck(2);
 		}
 	}
+	
+	public void displayDeliveriesMadeByDriver(Driver driver) {
+		System.out.println("\nDeliveries made (this week) to : "
+				+ driver.getFirstName() + " " + driver.getLastName() + " "
+				+ driver.getDriverID());
+		lineCheck(2);
+		System.out.println("========================================================= ");
+		lineCheck(1);
+
+		for (Delivery d : driver.getDeliveriesMadeList()) {
+			displayDelivery(d);
+			lineCheck(2);
+		}
+	}
 
 	/**
 	 * Displays the drivers in the drivers list. Displays the same information

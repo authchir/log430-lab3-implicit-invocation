@@ -37,11 +37,14 @@ public class SystemInitialize {
 		 * a component by name. I used the declared name of the object, but you
 		 * could use anything you want.
 		 */
+		
+		// Really?!?
 		new AssignDriverToDelivery(new Integer(100), "AssignDriverToDelivery");
 		new ListDrivers(new Integer(101), "ListDriversComponent");
 		new ListDeliveries(new Integer(102), "ListDeliveriesComponent");
 		new ListDeliveriesAssignedToDriver(new Integer(103), "ListDeliveriesAssignedToDriverComponent");
 		new ListDriversAssignedToDelivery(new Integer(104), "ListDriversAssignedToDeliveryComponent");
+		new ListDeliveriesMadeByDriver(new Integer(201), "ListDeliveriesMadeByDriver");
 
 		Executive executiveComponent = new Executive(new Integer(105), "ExecutiveComponent");
 
