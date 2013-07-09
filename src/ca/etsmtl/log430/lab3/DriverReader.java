@@ -1,5 +1,8 @@
 package ca.etsmtl.log430.lab3;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Reads from the InputFile and instantiates the Driver objects in the system.
  * It is assumed that the InputFile is in the local directory, contains the
@@ -49,7 +52,7 @@ public class DriverReader extends LineOfTextFileReader {
 	/**
 	 * The list of drivers.
 	 */
-	private DriverList listOfDrivers = new DriverList();
+	private List<Driver> listOfDrivers;;
 
 	public DriverReader() {
 
@@ -73,7 +76,7 @@ public class DriverReader extends LineOfTextFileReader {
 	 * @param inputFile
 	 * @return The list of drivers
 	 */
-	public DriverList readDriverListFromFile(String inputFile) {
+	public List<Driver> readDriverListFromFile(String inputFile) {
 
 		String text; // Line of text from the file
 		boolean done; // End of the file - stop processing
@@ -81,7 +84,7 @@ public class DriverReader extends LineOfTextFileReader {
 		// New teacher list object - this will contain all of the teachers in
 		// the file
 
-		DriverList listObject = new DriverList();
+		List<Driver> listObject = new ArrayList<Driver>();
 
 		if (openFile(inputFile)) {
 
@@ -99,7 +102,7 @@ public class DriverReader extends LineOfTextFileReader {
 
 					} else {
 
-						listObject.addDriver(parseText(text));
+						listObject.add(parseText(text));
 
 					} // if
 
@@ -123,11 +126,11 @@ public class DriverReader extends LineOfTextFileReader {
 
 	} // readTeacherListFromFile
 
-	public DriverList getListOfDrivers() {
+	public List<Driver> getListOfDrivers() {
 		return listOfDrivers;
 	}
 
-	public void setListOfDrivers(DriverList listOfDrivers) {
+	public void setListOfDrivers(List<Driver> listOfDrivers) {
 		this.listOfDrivers = listOfDrivers;
 	}
 
@@ -197,7 +200,7 @@ public class DriverReader extends LineOfTextFileReader {
 				// Note that there are no details other than the delivery
 				// ID and duration that is recorded in the driver's previous
 				// deliveries list.
-				driver.getDeliveriesMadeList().addDelivery(new Delivery(token));
+				driver.getDeliveriesMadeList().add(new Delivery(token));
 				frontIndex = backIndex + 1;
 				break;
 

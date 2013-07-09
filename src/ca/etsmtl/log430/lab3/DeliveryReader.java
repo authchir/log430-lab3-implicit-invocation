@@ -1,5 +1,8 @@
 package ca.etsmtl.log430.lab3;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * This class will read from the InputFile and instantiate the Delivery objects
  * in the system. It is assumed that the InputFile is in the local directory,
@@ -39,14 +42,14 @@ public class DeliveryReader extends LineOfTextFileReader {
 	/**
 	 * List of deliveries.
 	 */
-    private DeliveryList listOfDeliveries = new DeliveryList();
+    private List<Delivery> listOfDeliveries;;
 
     public DeliveryReader() {
-        setListOfDeliveries(null);
+        this.listOfDeliveries = null;
     }
 
     public DeliveryReader(String InputFile) {
-        setListOfDeliveries(getDeliveryList(InputFile));
+        this.listOfDeliveries = getDeliveryList(InputFile);
     }
 
 	/**
@@ -59,11 +62,11 @@ public class DeliveryReader extends LineOfTextFileReader {
 	 * @param inputFile
 	 * @return The DeliveryList properly populated
 	 */
-    public DeliveryList getDeliveryList(String inputFile) {
+    public List<Delivery> getDeliveryList(String inputFile) {
 
         String text;
         boolean done;
-        DeliveryList list = new DeliveryList();
+        List<Delivery> list = new ArrayList<Delivery>();
 
         if (openFile(inputFile)) {
 
@@ -81,7 +84,7 @@ public class DeliveryReader extends LineOfTextFileReader {
 
                     } else {
 
-                        list.addDelivery(parseText(text));
+                        list.add(parseText(text));
 
                     } // if 
 
@@ -103,7 +106,7 @@ public class DeliveryReader extends LineOfTextFileReader {
 
         closeFile();
 
-        return (list);
+        return list;
 
     } // GetDeliveryList
 
@@ -114,7 +117,7 @@ public class DeliveryReader extends LineOfTextFileReader {
 	 * @param lineOfText
 	 * @return A properly populated Delivery instance.
 	 */
-    private Delivery parseText(String lineOfText) {
+    private static Delivery parseText(String lineOfText) {
 
         boolean done; // Loop terminator
         String token; // String token parsed from LineOfText
@@ -176,11 +179,7 @@ public class DeliveryReader extends LineOfTextFileReader {
 
     } // ParseText
 
-	public void setListOfDeliveries(DeliveryList listOfDeliveries) {
-		this.listOfDeliveries = listOfDeliveries;
-	}
-
-	public DeliveryList getListOfDeliveries() {
+	public List<Delivery> getListOfDeliveries() {
 		return listOfDeliveries;
 	}
 

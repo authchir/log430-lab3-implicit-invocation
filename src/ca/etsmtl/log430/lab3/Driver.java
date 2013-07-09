@@ -1,5 +1,8 @@
 package ca.etsmtl.log430.lab3;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * This class defines the Driver object for the system. Besides the static
  * attributes, there are two lists maintained. deliveriesMadeList is a DeliveryList
@@ -52,12 +55,12 @@ public class Driver {
 	/**
 	 *  List of deliveries previously made (before today) by the driver
 	 */
-	private DeliveryList deliveriesMadeList = new DeliveryList();
+	private List<Delivery> deliveriesMadeList = new ArrayList<Delivery>();
 
 	/**
 	 *  List of deliveries assigned to the driver for the current day
 	 */
-	private DeliveryList deliveriesAssignedList = new DeliveryList();
+	private List<Delivery> deliveriesAssignedList = new ArrayList<Delivery>();
 
 	/**
 	 * Assigns a delivery to a driver.
@@ -66,7 +69,7 @@ public class Driver {
 	 */
 	public void assignDelivery(Delivery delivery) {
 
-		getDeliveriesAssigned().addDelivery(delivery);
+		getDeliveriesAssigned().add(delivery);
 
 	}
 
@@ -102,19 +105,19 @@ public class Driver {
 		return driverType;
 	}
 
-	public void setDeliveriesMadeList(DeliveryList deliveriesMadeList) {
+	public void setDeliveriesMadeList(List<Delivery> deliveriesMadeList) {
 		this.deliveriesMadeList = deliveriesMadeList;
 	}
 
-	public DeliveryList getDeliveriesMadeList() {
+	public List<Delivery> getDeliveriesMadeList() {
 		return deliveriesMadeList;
 	}
 
-	public void setDeliveriesAssigned(DeliveryList deliveriesAssigned) {
+	public void setDeliveriesAssigned(List<Delivery> deliveriesAssigned) {
 		this.deliveriesAssignedList = deliveriesAssigned;
 	}
 
-	public DeliveryList getDeliveriesAssigned() {
+	public List<Delivery> getDeliveriesAssigned() {
 		return deliveriesAssignedList;
 	}
 

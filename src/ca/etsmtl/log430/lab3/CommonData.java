@@ -1,5 +1,8 @@
 package ca.etsmtl.log430.lab3;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Contains data that is used (directly or indirectly) by all
  * classes.
@@ -40,7 +43,7 @@ public class CommonData {
 	static DriverReader theListOfDrivers;
 
 	/** A list of components */
-	private static ComponentList systemComponents;
+	private static List<Communication> systemComponents;
 
 	/**
 	 * Initializes the driver and delivery list using the default lists
@@ -49,7 +52,7 @@ public class CommonData {
 		if (!initialized) {
 			theListOfDeliveries = new DeliveryReader(defaultDeliveryFile);
 			theListOfDrivers = new DriverReader(defaultDriverFile);
-			systemComponents = new ComponentList();
+			systemComponents = new ArrayList<Communication>();
 			initialized = true;
 		} // if
 
@@ -70,22 +73,34 @@ public class CommonData {
 	 * @param component
 	 */
 	public void registerComponent(Communication component) {
-		systemComponents.addComponent(component);
+		systemComponents.add(component);
 	}
 
 	/**
 	 * @param componentName
 	 * @return object that corresponds to the object's instance name
 	 */
-	public Communication getComponent(String componentName) {
-		return (systemComponents.getComponent(componentName));
+	public Communication getComponent(final String componentName) {
+		return Utils.find(systemComponents, new Predicate<Communication>() {
+			@Override
+			public boolean run(Communication c) {
+				return c.componentName.equalsIgnoreCase(componentName);
+			}
+		});
 	}
 
 	/**
 	 * @param componentName
 	 * @return registration ID that corresponds to the object's instance name
 	 */
-	public Integer getComponentID(String componentName) {
-		return (systemComponents.getComponentID(componentName));
+	public Integer getComponentID(final String componentName) {
+		Communication c = Utils.find(systemComponents, new Predicate<Communication>() {
+			@Override
+			public boolean run(Communication c) {
+				return c.componentName.equalsIgnoreCase(componentName);
+			}
+		});
+		
+		return c != null ? c.registrationNumber : null;
 	}
 }

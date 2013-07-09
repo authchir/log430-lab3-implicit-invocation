@@ -4,13 +4,15 @@ package ca.etsmtl.log430.lab3;
  * This class presents the user with menus, accepts their choice, ensures their
  * choice is valid, and returns their choice to the caller. The menu is
  * presented as follows:
+ * 
  * <pre>
  *    1) List drivers
  *    2) List deliveries
  *    3) List deliveries currently assigned to a driver today
  *    4) List drivers currently assigned to a delivery today
  *    5) Assign a driver to a delivery
- *    X) Exit.</pre>
+ *    X) Exit.
+ * </pre>
  * 
  * @author A.J. Lattanze, CMU
  * @version 1.4, 2012-May-31.
@@ -32,15 +34,12 @@ package ca.etsmtl.log430.lab3;
  */
 
 public class Menus {
-
 	public char mainMenu() {
-
 		Termio terminal = new Termio();
 		char userChoice = ' ';
 		boolean error = true;
 
 		while (error) {
-
 			System.out.println("\n\n1) List drivers");
 			System.out.println("2) List deliveries");
 			System.out.println("3) List deliveries currently assigned to a driver today");
@@ -51,66 +50,52 @@ public class Menus {
 
 			userChoice = terminal.keyboardReadChar();
 
-			if ((userChoice != 'X') && (userChoice != 'x')
-					&& (userChoice < '1') && (userChoice != '2')
-					&& (userChoice != '3') && (userChoice < '4')
-					&& (userChoice != '5')) {
+			if ((userChoice != 'X') && (userChoice != 'x') && (userChoice < '1') && (userChoice != '2')
+					&& (userChoice != '3') && (userChoice < '4') && (userChoice != '5')) {
 
-				System.out.print("\n\n*** Invalid Choice:: " + userChoice
-						+ " ***");
+				System.out.print("\n\n*** Invalid Choice:: " + userChoice + " ***");
 
 			} else {
-
 				error = false;
+			}
+		}
+		return userChoice;
+	}
 
-			} // if
-
-		} // while
-
-		return (userChoice);
-
-	} // MainMenu
-
-	public Driver pickDriver(DriverList list) {
-
-		Termio terminal = new Termio();
-		String userChoice;
-		Driver driver = null;
-
+	public Driver pickDriver(Iterable<Driver> list) {
 		System.out.print("\n\nEnter driver ID and press return >> ");
-		userChoice = terminal.keyboardReadString();
+		final String userChoice = new Termio().keyboardReadString();
 
-		driver = list.findDriverByID(userChoice);
+		Driver driver = Utils.find(list, new Predicate<Driver>() {
+			@Override
+			public boolean run(Driver d) {
+				return d.getDriverID().equalsIgnoreCase(userChoice);
+			}
+		});
 
 		if (driver == null) {
+			System.out.println("\n\n*** Driver ID " + userChoice + " not found ***");
+		}
 
-			System.out.println("\n\n*** Driver ID " + userChoice
-					+ " not found ***");
-
-		} // if
-
-		return (driver);
+		return driver;
 
 	}
 
-	public Delivery pickDelivery(DeliveryList list) {
-
-		Termio terminal = new Termio();
-		String userChoiceDeliveryID;
-		Delivery delivery = null;
-
+	public Delivery pickDelivery(Iterable<Delivery> list) {
 		System.out.print("\nEnter delivery ID and press return >> ");
-		userChoiceDeliveryID = terminal.keyboardReadString();
+		final String userChoiceDeliveryID = new Termio().keyboardReadString();
 
-		delivery = list.findDelivery(userChoiceDeliveryID);
+		 Delivery delivery = Utils.find(list, new Predicate<Delivery>() {
+			@Override
+			public boolean run(Delivery d) {
+				return d.getDeliveryID().equalsIgnoreCase(userChoiceDeliveryID);
+			} 
+		 });
 
 		if (delivery == null) {
 			System.out.print("\n\n*** Delivery ID:" + userChoiceDeliveryID + " not found ***");
+		}
 
-		} // if
-
-		return (delivery);
-
-	} // pickDelivery
-
-} // Menus
+		return delivery;
+	}
+}

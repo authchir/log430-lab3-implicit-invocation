@@ -1,5 +1,8 @@
 package ca.etsmtl.log430.lab3;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /** This class defines the Delivery object for the system.
 * 
 * @author A.J. Lattanze, CMU
@@ -52,7 +55,7 @@ public class Delivery {
 	/**
 	 * List of drivers assigned to the delivery
 	 */
-	private DriverList driversAssigned = new DriverList();
+	private List<Driver> driversAssigned = new ArrayList<Driver>();
 
 	public Delivery() {
 		this(null);
@@ -74,7 +77,7 @@ public class Delivery {
 	 * @param driver
 	 */
 	public void assignDriver(Driver driver) {
-		driversAssigned.addDriver(driver);
+		driversAssigned.add(driver);
 	}
 
 	public void setDeliveryID(String deliveryID) {
@@ -109,11 +112,11 @@ public class Delivery {
 		this.address = address;
 	}
 
-	public DriverList getDriversAssigned() {
+	public List<Driver> getDriversAssigned() {
 		return driversAssigned;
 	}
 
-	public void setDriversAssigned(DriverList driversAssigned) {
+	public void setDriversAssigned(List<Driver> driversAssigned) {
 		this.driversAssigned = driversAssigned;
 	}
 

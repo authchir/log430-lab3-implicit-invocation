@@ -3,8 +3,8 @@ package ca.etsmtl.log430.lab3;
 import java.util.Observable;
 
 /**
- * Upon notification, lists the drivers that were read into the vector stored
- * in the CommonData class.
+ * Upon notification, lists the drivers that were read into the vector stored in
+ * the CommonData class.
  * 
  * @author A.J. Lattanze, CMU
  * @version 1.4, 2012-Jun-19
@@ -45,8 +45,7 @@ public class ListDrivers extends Communication {
 
 		if (registrationNumber.compareTo((Integer) notificationNumber) == 0) {
 			Displays display = new Displays();
-			display.displayDriverList(CommonData.theListOfDrivers
-					.getListOfDrivers());
+			display.displayDriverList(CommonData.theListOfDrivers.getListOfDrivers());
 		}
 	}
 }
