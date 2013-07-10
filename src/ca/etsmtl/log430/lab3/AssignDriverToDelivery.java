@@ -136,8 +136,7 @@ public class AssignDriverToDelivery extends Communication {
 		
 		int days = calDuration.get(Calendar.DAY_OF_YEAR);
 		int hours = calDuration.get(Calendar.HOUR_OF_DAY);
-		int minutes = calDuration.get(Calendar.MINUTE);
-		double totalHours = days * 24 + hours + minutes / 100;
+		double totalHours = days * 24 + hours;
 		
 		if (driver.getType() == "JNR")
 			if (totalHours <= 12) 
