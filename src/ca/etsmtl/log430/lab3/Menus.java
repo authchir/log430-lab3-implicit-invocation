@@ -7,7 +7,7 @@ import java.util.Collections;
  * This class presents the user with menus, accepts their choice, ensures their
  * choice is valid, and returns their choice to the caller. The menu is
  * presented as follows:
- * 
+ *
  * <pre>
  *    1) List drivers
  *    2) List deliveries
@@ -16,7 +16,7 @@ import java.util.Collections;
  *    5) Assign a driver to a delivery
  *    X) Exit.
  * </pre>
- * 
+ *
  * @author A.J. Lattanze, CMU
  * @version 1.4, 2012-May-31.
  */
@@ -35,8 +35,8 @@ import java.util.Collections;
  * v1.0, 12/29/99, A.J. Lattanze - Original version.
  * ***************************************************************************
  */
-
 public class Menus {
+
 	public char mainMenu() {
 		Termio terminal = new Termio();
 		char userChoice = ' ';
@@ -49,12 +49,13 @@ public class Menus {
 			System.out.println("4) List drivers currently assigned to a delivery today");
 			System.out.println("5) Assign a driver to a delivery");
 			System.out.println("6) List deliveries made by driver");
+			System.out.println("7) List today's deliveries not currently assigned");
 			System.out.println("X) Exit");
 			System.out.print("\n\nEnter your choice and press return >> ");
 
 			userChoice = terminal.keyboardReadChar();
 
-			if (!Utils.contains(Arrays.asList('1', '2', '3', '4', '5', '6', 'X', 'x'), userChoice)) {
+			if (!Utils.contains(Arrays.asList('1', '2', '3', '4', '5', '6', '7', 'X', 'x'), userChoice)) {
 				System.out.print("\n\n*** Invalid Choice:: " + userChoice + " ***");
 			} else {
 				error = false;
@@ -86,12 +87,12 @@ public class Menus {
 		System.out.print("\nEnter delivery ID and press return >> ");
 		final String userChoiceDeliveryID = new Termio().keyboardReadString();
 
-		 Delivery delivery = Utils.find(list, new Predicate<Delivery>() {
+		Delivery delivery = Utils.find(list, new Predicate<Delivery>() {
 			@Override
 			public boolean run(Delivery d) {
 				return d.getDeliveryID().equalsIgnoreCase(userChoiceDeliveryID);
-			} 
-		 });
+			}
+		});
 
 		if (delivery == null) {
 			System.out.print("\n\n*** Delivery ID:" + userChoiceDeliveryID + " not found ***");

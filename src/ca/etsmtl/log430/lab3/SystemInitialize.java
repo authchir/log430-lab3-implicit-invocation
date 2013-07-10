@@ -45,6 +45,7 @@ public class SystemInitialize {
 		new ListDeliveriesAssignedToDriver(new Integer(103), "ListDeliveriesAssignedToDriverComponent");
 		new ListDriversAssignedToDelivery(new Integer(104), "ListDriversAssignedToDeliveryComponent");
 		new ListDeliveriesMadeByDriver(new Integer(201), "ListDeliveriesMadeByDriver");
+		new ListTodaysDeliveriesNotAssigned(new Integer(301), "ListTodaysDeliveriesNotAssignedComponent");
 
 		Executive executiveComponent = new Executive(new Integer(105), "ExecutiveComponent");
 
