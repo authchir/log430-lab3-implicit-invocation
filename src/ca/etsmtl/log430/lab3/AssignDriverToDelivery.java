@@ -1,6 +1,12 @@
 package ca.etsmtl.log430.lab3;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Observable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Assigns drivers to deliveries.
@@ -68,10 +74,15 @@ public class AssignDriverToDelivery extends Communication {
 					 * is assigned to no one,then complete the assignment process.
 					 */
 					if (myDelivery.getDriversAssigned().isEmpty()) {
-						myDelivery.assignDriver(myDriver);
-						myDriver.assignDelivery(myDelivery);
+						if(noConflictsWillHappenUponAssignation(myDriver, myDelivery)){
+							myDelivery.assignDriver(myDriver);
+							myDriver.assignDelivery(myDelivery);
+						} else {
+							System.out.println("\n\n Delivery in conflict with already assigned deliveries");
+						}
+
 					} else {
-						System.out.println("\n\n *** Delivery already assigned ***");
+						System.out.println("\n\n *** Delivery already assigned to a driver ***");
 					}
 
 				} else {
@@ -81,5 +92,63 @@ public class AssignDriverToDelivery extends Communication {
 				System.out.println("\n\n *** Driver not found ***");
 			}
 		}
+	}
+
+	private boolean noConflictsWillHappenUponAssignation(Driver driver, Delivery delivery) {
+		Date deliveryMinTime = getDeliveryMinTime(delivery);
+		Date deliveryMaxTime = getDeliveryMaxTime(delivery);
+
+		for (Delivery d : driver.getDeliveriesAssigned()) {
+			Date minTime = getDeliveryMinTime(d);
+			Date maxTime = getDeliveryMaxTime(d);
+			if (isBetweenTwoDates(deliveryMinTime, minTime, maxTime) ||
+					isBetweenTwoDates(deliveryMaxTime, minTime, maxTime)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	private boolean isBetweenTwoDates(Date date, Date dateMin, Date dateMax) {
+		return dateMin.before(date) && dateMax.after(dateMax);
+	}
+
+	private Date getDeliveryMinTime(Delivery d) {
+		return addDurationFactorToDeliveryTime(d, -1);
+	}
+
+	private Date getDeliveryMaxTime(Delivery d) {
+		return addDurationFactorToDeliveryTime(d, 1);
+	}
+
+	private Date addDurationFactorToDeliveryTime(Delivery d, int factor) {
+		Date deliveryTime = parseFourCharFormatDateString(d.getDesiredDeliveryTime());
+		Date deliveryDuration = parseFourCharFormatDateString(d.getEstimatedDeliveryDuration());
+
+		Calendar calDuration = Calendar.getInstance();
+		calDuration.clear();
+		calDuration.setTime(deliveryDuration);
+
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(deliveryTime);
+
+		cal.add(Calendar.HOUR_OF_DAY, factor * calDuration.get(Calendar.HOUR_OF_DAY));
+		cal.add(Calendar.MINUTE, factor * calDuration.get(Calendar.MINUTE));
+
+		return cal.getTime();
+	}
+
+	private Date parseFourCharFormatDateString(String s) {
+		SimpleDateFormat sd = new SimpleDateFormat("HHmm");
+		Date d = null;
+		try {
+			d = sd.parse(s);
+		} catch (ParseException ex) {
+			Logger.getLogger(AssignDriverToDelivery.class.getName()).log(Level.SEVERE, null, ex);
+		}
+
+		return d;
+
+
 	}
 }
