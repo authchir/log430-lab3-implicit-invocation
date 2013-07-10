@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 
 /**
  * Assigns drivers to deliveries.
- *
+ * 
  * @author A.J. Lattanze, CMU
  * @version 1.4, 2012-Jun-19
  */
@@ -40,9 +40,9 @@ public class AssignDriverToDelivery extends Communication {
 	 * notifyObservers() method is called by the Observable class. First we
 	 * check to see if the NotificationNumber is equal to this thread's
 	 * RegistrationNumber. If it is, then we execute.
-	 *
+	 * 
 	 * @see ca.etsmtl.log430.lab3.Communication#update(java.util.Observable,
-	 * java.lang.Object)
+	 *      java.lang.Object)
 	 */
 	public void update(Observable thing, Object notificationNumber) {
 		Menus menu = new Menus();
@@ -70,13 +70,18 @@ public class AssignDriverToDelivery extends Communication {
 
 				if (myDelivery != null) {
 					/*
-					 * If the selected delivery and driver exist and the delivery 
-					 * is assigned to no one,then complete the assignment process.
+					 * If the selected delivery and driver exist and the
+					 * delivery is assigned to no one,then complete the
+					 * assignment process.
 					 */
 					if (myDelivery.getDriversAssigned().isEmpty()) {
-						if(noConflictsWillHappenUponAssignation(myDriver, myDelivery)){
-							myDelivery.assignDriver(myDriver);
-							myDriver.assignDelivery(myDelivery);
+						if (noConflictsWillHappenUponAssignation(myDriver, myDelivery)) {
+							if (driverCanDoSomething(myDriver, myDelivery)) {
+								myDelivery.assignDriver(myDriver);
+								myDriver.assignDelivery(myDelivery);
+							} else {
+								System.out.println("\n\n *** Maximum number of hours allowed already allocated to driver ***");
+							}
 						} else {
 							System.out.println("\n\n *** Delivery in conflict with already assigned deliveries ***");
 						}
@@ -101,12 +106,35 @@ public class AssignDriverToDelivery extends Communication {
 		for (Delivery d : driver.getDeliveriesAssigned()) {
 			Date minTime = getDeliveryMinTime(d);
 			Date maxTime = getDeliveryMaxTime(d);
-			if (!isBetweenTwoDates(deliveryMinTime, minTime, maxTime) ||
-					!isBetweenTwoDates(deliveryMaxTime, minTime, maxTime)) {
+			if (!isBetweenTwoDates(deliveryMinTime, minTime, maxTime) || !isBetweenTwoDates(deliveryMaxTime, minTime, maxTime)) {
 				return false;
 			}
 		}
 		return true;
+	}
+
+	private boolean driverCanDoSomething(Driver driver, Delivery delivery) {
+		int time = 0;
+		
+		if (driver == null)
+			return false;
+
+		for (Delivery d : driver.getDeliveriesAssigned()) {
+			time += parseDeliveryEstimatedDurationString(d.getEstimatedDeliveryDuration()) * 2;
+		}
+
+		if (driver.getType() == "JNR") {
+			if (time + (parseDeliveryEstimatedDurationString(delivery.getEstimatedDeliveryDuration()) * 2) <= 12) {
+				return true;
+			}
+
+		} else if (driver.getType() == "SNR") {
+			if (time + (parseDeliveryEstimatedDurationString(delivery.getEstimatedDeliveryDuration()) * 2) <= 8) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	private boolean isBetweenTwoDates(Date date, Date dateMin, Date dateMax) {
@@ -137,6 +165,18 @@ public class AssignDriverToDelivery extends Communication {
 		cal.add(Calendar.MINUTE, factor * calDuration.get(Calendar.MINUTE));
 
 		return cal.getTime();
+	}
+
+	private int parseDeliveryEstimatedDurationString(String durationString) {
+		int duration = 0;
+
+		try {
+			duration = Integer.parseInt(durationString);
+		} catch (NumberFormatException ex) {
+			Logger.getLogger(AssignDriverToDelivery.class.getName()).log(Level.SEVERE, null, ex);
+		}
+
+		return duration;
 	}
 
 	private Date parseFourCharFormatDateString(String s) {
