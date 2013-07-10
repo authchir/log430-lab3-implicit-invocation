@@ -139,15 +139,18 @@ public class AssignDriverToDelivery extends Communication {
 		int minutes = calDuration.get(Calendar.MINUTE);
 		double totalHours = (days - 1) * 24 + hours + minutes / 100.0;
 		
-		if (driver.getType() == "JNR")
-			if (totalHours <= 12) 
-				return true;
-
-		else if (driver.getType() == "SNR") 
-			if (totalHours <= 8)
-				return true;
-
-		return false;
+		double maxHours = 0;
+		if("JNR".equals(driver.getType())){
+			maxHours = 12;
+		} else if("SNR".equals(driver.getType())){
+			maxHours = 8;
+		}
+		
+		if(totalHours <= maxHours){
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	private boolean isBetweenTwoDates(Date date, Date dateMin, Date dateMax) {
