@@ -114,25 +114,38 @@ public class AssignDriverToDelivery extends Communication {
 	}
 
 	private boolean driverCanDoSomething(Driver driver, Delivery delivery) {
-		int time = 0;
-		
-		if (driver == null)
+		Calendar calDuration = Calendar.getInstance();
+		Calendar cal = Calendar.getInstance();
+
+		if (driver == null || delivery == null)
 			return false;
+		
+		calDuration.clear();
+		
+		cal.clear();
+		cal.setTime(parseFourCharFormatDateString(delivery.getEstimatedDeliveryDuration()));
+		calDuration.add(Calendar.HOUR_OF_DAY, cal.get(Calendar.HOUR_OF_DAY) * 2);
+		calDuration.add(Calendar.MINUTE, cal.get(Calendar.MINUTE) * 2);
 
 		for (Delivery d : driver.getDeliveriesAssigned()) {
-			time += parseDeliveryEstimatedDurationString(d.getEstimatedDeliveryDuration()) * 2;
+			cal.clear();
+			cal.setTime(parseFourCharFormatDateString(d.getEstimatedDeliveryDuration()));
+			calDuration.add(Calendar.HOUR_OF_DAY, cal.get(Calendar.HOUR_OF_DAY) * 2);
+			calDuration.add(Calendar.MINUTE, cal.get(Calendar.MINUTE) * 2);
 		}
-
-		if (driver.getType() == "JNR") {
-			if (time + (parseDeliveryEstimatedDurationString(delivery.getEstimatedDeliveryDuration()) * 2) <= 12) {
+		
+		int days = calDuration.get(Calendar.DAY_OF_YEAR);
+		int hours = calDuration.get(Calendar.HOUR_OF_DAY);
+		int minutes = calDuration.get(Calendar.MINUTE);
+		double totalHours = days * 24 + hours + minutes / 100;
+		
+		if (driver.getType() == "JNR")
+			if (totalHours <= 12) 
 				return true;
-			}
 
-		} else if (driver.getType() == "SNR") {
-			if (time + (parseDeliveryEstimatedDurationString(delivery.getEstimatedDeliveryDuration()) * 2) <= 8) {
+		else if (driver.getType() == "SNR") 
+			if (totalHours <= 8)
 				return true;
-			}
-		}
 
 		return false;
 	}
@@ -165,18 +178,6 @@ public class AssignDriverToDelivery extends Communication {
 		cal.add(Calendar.MINUTE, factor * calDuration.get(Calendar.MINUTE));
 
 		return cal.getTime();
-	}
-
-	private int parseDeliveryEstimatedDurationString(String durationString) {
-		int duration = 0;
-
-		try {
-			duration = Integer.parseInt(durationString);
-		} catch (NumberFormatException ex) {
-			Logger.getLogger(AssignDriverToDelivery.class.getName()).log(Level.SEVERE, null, ex);
-		}
-
-		return duration;
 	}
 
 	private Date parseFourCharFormatDateString(String s) {
