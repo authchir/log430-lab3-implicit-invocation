@@ -78,7 +78,7 @@ public class AssignDriverToDelivery extends Communication {
 							myDelivery.assignDriver(myDriver);
 							myDriver.assignDelivery(myDelivery);
 						} else {
-							System.out.println("\n\n Delivery in conflict with already assigned deliveries");
+							System.out.println("\n\n *** Delivery in conflict with already assigned deliveries ***");
 						}
 
 					} else {
@@ -101,8 +101,8 @@ public class AssignDriverToDelivery extends Communication {
 		for (Delivery d : driver.getDeliveriesAssigned()) {
 			Date minTime = getDeliveryMinTime(d);
 			Date maxTime = getDeliveryMaxTime(d);
-			if (isBetweenTwoDates(deliveryMinTime, minTime, maxTime) ||
-					isBetweenTwoDates(deliveryMaxTime, minTime, maxTime)) {
+			if (!isBetweenTwoDates(deliveryMinTime, minTime, maxTime) ||
+					!isBetweenTwoDates(deliveryMaxTime, minTime, maxTime)) {
 				return false;
 			}
 		}
@@ -130,6 +130,7 @@ public class AssignDriverToDelivery extends Communication {
 		calDuration.setTime(deliveryDuration);
 
 		Calendar cal = Calendar.getInstance();
+		cal.clear();
 		cal.setTime(deliveryTime);
 
 		cal.add(Calendar.HOUR_OF_DAY, factor * calDuration.get(Calendar.HOUR_OF_DAY));
@@ -148,7 +149,5 @@ public class AssignDriverToDelivery extends Communication {
 		}
 
 		return d;
-
-
 	}
 }
