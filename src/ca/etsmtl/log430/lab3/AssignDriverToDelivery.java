@@ -154,7 +154,7 @@ public class AssignDriverToDelivery extends Communication {
 	}
 
 	private boolean isBetweenTwoDates(Date date, Date dateMin, Date dateMax) {
-		return dateMin.before(date) && dateMax.after(dateMax);
+		return dateMin.before(date) && dateMax.after(date);
 	}
 
 	private Date getDeliveryMinTime(Delivery d) {
