@@ -4,9 +4,6 @@
  */
 package ca.etsmtl.log430.lab3;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Observable;
 
 /**
@@ -20,16 +17,13 @@ public class ListTodaysDeliveriesNotAssigned extends Communication {
 	}
 	
 	public void update(Observable sender, Object notificationNumber){
-		
+		Displays display = new Displays();
 		if (registrationNumber.compareTo((Integer) notificationNumber) == 0) {			
-			List<Delivery> deliveries = new ArrayList<Delivery>();
 			for(Delivery d : CommonData.theListOfDeliveries.getListOfDeliveries()){
-				if(d.getDriversAssigned().size() == 0){
-					deliveries.add(d);
+				if(d.getDriversAssigned().isEmpty()){
+					display.displayDelivery(d);
 				}
 			}
-			Displays display = new Displays();
-			display.displayDeliveryList(deliveries);
 		}
 	}
 
