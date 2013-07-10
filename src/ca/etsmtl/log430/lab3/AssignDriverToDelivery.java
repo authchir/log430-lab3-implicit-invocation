@@ -4,7 +4,7 @@ import java.util.Observable;
 
 /**
  * Assigns drivers to deliveries.
- *  
+ *
  * @author A.J. Lattanze, CMU
  * @version 1.4, 2012-Jun-19
  */
@@ -23,8 +23,8 @@ import java.util.Observable;
  * v1.0, A.J. Lattanze, 12/29/99 - Original version.
  * ***************************************************************************
  */
-public class AssignDriverToDelivery extends Communication
-{
+public class AssignDriverToDelivery extends Communication {
+
 	public AssignDriverToDelivery(Integer registrationNumber, String componentName) {
 		super(registrationNumber, componentName);
 	}
@@ -34,16 +34,16 @@ public class AssignDriverToDelivery extends Communication
 	 * notifyObservers() method is called by the Observable class. First we
 	 * check to see if the NotificationNumber is equal to this thread's
 	 * RegistrationNumber. If it is, then we execute.
-	 * 
+	 *
 	 * @see ca.etsmtl.log430.lab3.Communication#update(java.util.Observable,
-	 *      java.lang.Object)
+	 * java.lang.Object)
 	 */
 	public void update(Observable thing, Object notificationNumber) {
 		Menus menu = new Menus();
 		Driver myDriver = new Driver();
 		Delivery myDelivery = new Delivery();
 
-		if (registrationNumber.compareTo((Integer)notificationNumber) == 0) {
+		if (registrationNumber.compareTo((Integer) notificationNumber) == 0) {
 			addToReceiverList("ListDriversComponent");
 			addToReceiverList("ListDeliveriesComponent");
 
@@ -62,16 +62,21 @@ public class AssignDriverToDelivery extends Communication
 
 				myDelivery = menu.pickDelivery(CommonData.theListOfDeliveries.getListOfDeliveries());
 
-				if (myDelivery != null)	{	
+				if (myDelivery != null) {
 					/*
-					 * If the selected delivery and driver exist, then complete
-					 * the assignment process.
+					 * If the selected delivery and driver exist and the delivery 
+					 * is assigned to no one,then complete the assignment process.
 					 */
-					myDelivery.assignDriver(myDriver);
-					myDriver.assignDelivery(myDelivery);
+					if (myDelivery.getDriversAssigned().isEmpty()) {
+						myDelivery.assignDriver(myDriver);
+						myDriver.assignDelivery(myDelivery);
+					} else {
+						System.out.println("\n\n *** Delivery already assigned ***");
+					}
+
 				} else {
 					System.out.println("\n\n *** Delivery not found ***");
-				} 
+				}
 			} else {
 				System.out.println("\n\n *** Driver not found ***");
 			}
