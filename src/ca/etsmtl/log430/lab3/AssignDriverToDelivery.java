@@ -106,7 +106,7 @@ public class AssignDriverToDelivery extends Communication {
 		for (Delivery d : driver.getDeliveriesAssigned()) {
 			Date minTime = getDeliveryMinTime(d);
 			Date maxTime = getDeliveryMaxTime(d);
-			if (!isBetweenTwoDates(deliveryMinTime, minTime, maxTime) || !isBetweenTwoDates(deliveryMaxTime, minTime, maxTime)) {
+			if (isBetweenTwoDates(deliveryMinTime, minTime, maxTime) || isBetweenTwoDates(deliveryMaxTime, minTime, maxTime)) {
 				return false;
 			}
 		}
